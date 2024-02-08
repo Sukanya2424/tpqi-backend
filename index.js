@@ -60,6 +60,10 @@ const jwtSecret = 'tpqi';
 
 
 
+app.get('/', (req, res) => {
+    res.send('This is my backend running... ')
+})
+
 
 
 app.post('/register', (req, res) => {
