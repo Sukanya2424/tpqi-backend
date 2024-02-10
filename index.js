@@ -22,18 +22,18 @@ app.use(cors({
   
 
 const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
+  host: "competencyprofilesystem.cn0oe4syeygv.eu-north-1.rds.amazonaws.com",
+  user: "root",
+  password: "root2307",
+  database: "tpqi"
 });
 
 // Configure your second MySQL database connection
 const db2 = mysql.createConnection({
-  host: process.env.DB_HOST2,
-  user: process.env.DB_USER2,
-  password: process.env.DB_PASSWORD2,
-  database: process.env.DB_DATABASE2
+  host: "competencyprofilesystem.cn0oe4syeygv.eu-north-1.rds.amazonaws.com",
+  user: "root",
+  password: "root2307",
+  database: "users_info"
 });
 
 
