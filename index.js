@@ -11,7 +11,7 @@ require('dotenv').config()
 const app = express();
 const port = process.env.PORT || 3000;
 
-// const { createProxyMiddleware } = require('http-proxy-middleware');
+
 
 app.use(express.json());
 
@@ -22,18 +22,18 @@ app.use(cors({
   
 
 const db = mysql.createConnection({
-  host: "competencyprofilesystem.cn0oe4syeygv.eu-north-1.rds.amazonaws.com",
-  user: "root",
-  password: "root2307",
-  database: "tpqi"
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE
 });
 
 // Configure your second MySQL database connection
 const db2 = mysql.createConnection({
-  host: "competencyprofilesystem.cn0oe4syeygv.eu-north-1.rds.amazonaws.com",
-  user: "root",
-  password: "root2307",
-  database: "users_info"
+  host: process.env.DB_HOST2,
+  user: process.env.DB_USER2,
+  password: process.env.DB_PASSWORD2,
+  database: process.env.DB_DATABASE2
 });
 
 
