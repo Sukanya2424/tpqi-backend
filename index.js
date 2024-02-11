@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const multer = require('multer');
-const validUrl = require('valid-url');
+
 const axios = require('axios');
 const path = require('path');
 require('dotenv').config()
@@ -15,26 +15,29 @@ const port = process.env.PORT || 3000;
 
 app.use(express.json());
 
+app.use(cors());
 
 app.use(cors({
     origin: 'http://localhost:4200',
   }));
   
+const db = mysql.createConnection(process.env.DATABASE_URL)
 
-const db = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DATABASE
-});
 
-// Configure your second MySQL database connection
-const db2 = mysql.createConnection({
-  host: process.env.DB_HOST2,
-  user: process.env.DB_USER2,
-  password: process.env.DB_PASSWORD2,
-  database: process.env.DB_DATABASE2
-});
+// const db = mysql.createConnection({
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASSWORD,
+//   database: process.env.DB_DATABASE
+// });
+
+// // Configure your second MySQL database connection
+// const db2 = mysql.createConnection({
+//   host: process.env.DB_HOST2,
+//   user: process.env.DB_USER2,
+//   password: process.env.DB_PASSWORD2,
+//   database: process.env.DB_DATABASE2
+// });
 
 
 
@@ -48,13 +51,13 @@ db.connect((err) => {
 });
 
 // Connect to the second database
-db2.connect((err) => {
-    if (err) {
-        console.error('users_info database connection failed: ', err);
-    } else {
-        console.log('users_info database connected successfully');
-    }
-});
+// db2.connect((err) => {
+//     if (err) {
+//         console.error('users_info database connection failed: ', err);
+//     } else {
+//         console.log('users_info database connected successfully');
+//     }
+// });
 
 const jwtSecret = 'tpqi';
 
