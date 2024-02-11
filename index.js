@@ -17,11 +17,10 @@ app.use(express.json());
 
 app.use(cors());
 
-// app.use(cors({
-//     origin: 'http://localhost:4200',
-//   }));
   
 const db = mysql.createConnection(process.env.DATABASE_URL)
+
+const db2 = mysql.createConnection(process.env.DATABASE_URL2)
 
 
 
@@ -36,13 +35,13 @@ db.connect((err) => {
 });
 
 // Connect to the second database
-// db2.connect((err) => {
-//     if (err) {
-//         console.error('users_info database connection failed: ', err);
-//     } else {
-//         console.log('users_info database connected successfully');
-//     }
-// });
+db2.connect((err) => {
+    if (err) {
+        console.error('users_info database connection failed: ', err);
+    } else {
+        console.log('users_info database connected successfully');
+    }
+});
 
 const jwtSecret = 'tpqi';
 
