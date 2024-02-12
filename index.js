@@ -1107,74 +1107,20 @@ app.get('/getCareerLevels', (req, res) => {
 });
 
 
-// app.get('/getCareerLevels/:id', (req, res) => {
-//   const id = req.params.id; // Get the career level ID from the URL parameter
-//   const sql = `
-//   SELECT cl.id_career_level, c.name_career, l.name_level, 
-//   d.outcomes,uc.id_unit_code ,uc.unit_code, uc.name
-//       FROM career_level as cl
-//       LEFT JOIN career AS c ON c.id_career = cl.id_career
-//       LEFT JOIN level AS l ON l.id_level = cl.id_level
-//       LEFT JOIN all_details AS ad ON ad.id_career_level = cl.id_career_level
-//       LEFT JOIN details AS d ON d.id_d = ad.id_d
-//       LEFT JOIN cl_uc AS clu ON clu.id_career_level = cl.id_career_level 
-//     LEFT JOIN unit_code AS uc ON uc.id_unit_code = clu.id_unit_code
-//     WHERE cl.id_career_level = ?
-//   `;
-
-//   db.query(sql, [id], (error, result) => {
-//     if (error) {
-//       console.error('Error Fetching Career Level:', error);
-//       res.status(500).json({ status: false, error: 'Database Error' });
-//     } else {
-//       // Initialize arrays to store unit code and name
-//       const idunitCodeArray = [];
-//       const unitCodeArray = [];
-//       const unitNameArray = [];
-      
-//       // Iterate through the query result to collect unit code and name
-//       for (const row of result) {
-//         idunitCodeArray.push(row.id_unit_code);
-//         unitCodeArray.push(row.unit_code);
-//         unitNameArray.push(row.name);
-//       }
-
-//       if (result.length === 0) {
-//         res.status(404).json({ status: false, error: 'Career Level not found' });
-//       } else {
-//         // Send all the data, including the arrays of unit code and name
-//         res.status(200).json({
-//           status: true,
-//           data: {
-//             id_career_level: result[0].id_career_level,
-//             name_career: result[0].name_career,
-//             name_level: result[0].name_level,
-//             outcomes: result[0].outcomes,
-//             id_unit_code: idunitCodeArray,
-//             unit_code: unitCodeArray,
-//             name: unitNameArray,
-//           }
-//         });
-//       }
-//     }
-//   });
-// });
-
-
 app.get('/getCareerLevels/:id', (req, res) => {
   const id = req.params.id; // Get the career level ID from the URL parameter
   const sql = `
   SELECT cl.id_career_level, c.name_career, l.name_level, 
   d.outcomes,uc.id_unit_code ,uc.unit_code, uc.name
-    FROM career_level as cl
-    LEFT JOIN career AS c ON c.id_career = cl.id_career
-    LEFT JOIN level AS l ON l.id_level = cl.id_level
-    LEFT JOIN all_details AS ad ON ad.id_career_level = cl.id_career_level
-    LEFT JOIN details AS d ON d.id_d = ad.id_d
-    LEFT JOIN cl_uc AS clu ON clu.id_career_level = cl.id_career_level 
+      FROM career_level as cl
+      LEFT JOIN career AS c ON c.id_career = cl.id_career
+      LEFT JOIN level AS l ON l.id_level = cl.id_level
+      LEFT JOIN all_details AS ad ON ad.id_career_level = cl.id_career_level
+      LEFT JOIN details AS d ON d.id_d = ad.id_d
+      LEFT JOIN cl_uc AS clu ON clu.id_career_level = cl.id_career_level 
     LEFT JOIN unit_code AS uc ON uc.id_unit_code = clu.id_unit_code
     WHERE cl.id_career_level = ?
-    ORDER BY uc.id_unit_code ASC;
+    ORDER BY uc.id_unit_code ASC
   `;
 
   db.query(sql, [id], (error, result) => {
@@ -1182,29 +1128,22 @@ app.get('/getCareerLevels/:id', (req, res) => {
       console.error('Error Fetching Career Level:', error);
       res.status(500).json({ status: false, error: 'Database Error' });
     } else {
+      // Initialize arrays to store unit code and name
+      const idunitCodeArray = [];
+      const unitCodeArray = [];
+      const unitNameArray = [];
+      
+      // Iterate through the query result to collect unit code and name
+      for (const row of result) {
+        idunitCodeArray.push(row.id_unit_code);
+        unitCodeArray.push(row.unit_code);
+        unitNameArray.push(row.name);
+      }
 
       if (result.length === 0) {
         res.status(404).json({ status: false, error: 'Career Level not found' });
       } else {
         // Send all the data, including the arrays of unit code and name
-
-        // Initialize arrays to store unit code and name
-      const unitCodeData = [];
-      const unitCodeSet = new Set();
-;      
-      // Iterate through the query result to collect unit code and name
-      for (const row of result) {
-        const unitcodeItem = {
-          id_unit_code: row.id_unit_code,
-          unit_code: row.unit_code,
-          name: row.name,
-        };
-        if (!unitCodeSet.has(JSON.stringify(unitcodeItem))) {
-          unitCodeData.push(unitcodeItem);
-          unitCodeSet.add(JSON.stringify(unitcodeItem));
-        }
-      }
-
         res.status(200).json({
           status: true,
           data: {
@@ -1212,13 +1151,18 @@ app.get('/getCareerLevels/:id', (req, res) => {
             name_career: result[0].name_career,
             name_level: result[0].name_level,
             outcomes: result[0].outcomes,
-            unitcode: unitCodeData,
+            id_unit_code: idunitCodeArray,
+            unit_code: unitCodeArray,
+            name: unitNameArray,
           }
         });
       }
     }
   });
 });
+
+
+
 
 app.get('/getUnitCode/:id', (req, res) => {
   const id = req.params.id; // Get the career level ID from the URL parameter
