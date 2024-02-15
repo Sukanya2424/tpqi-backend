@@ -2281,7 +2281,7 @@ app.post('/createOccupational ', (req, res) => {
 
   const newu_occupational  = { name_occupational };
 
-  db.query('INSERT INTO unit_no9  SET ?', newu_occupational , (err, results) => {
+  db.query('INSERT INTO occupational  SET ?', newu_occupational , (err, results) => {
     if (err) {
       return res.status(500).json({ error: 'Create operation failed' });
     }
