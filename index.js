@@ -2276,12 +2276,12 @@ app.delete('/deleteUnitOccupational/:id', (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-app.post('/createOccupational ', (req, res) => {
+app.post('/createOccupational', (req, res) => {
   const { name_occupational } = req.body;
 
-  const newu_occupational  = { name_occupational };
+  const new_occupational  = { name_occupational };
 
-  db.query('INSERT INTO occupational  SET ?', newu_occupational , (err, results) => {
+  db.query('INSERT INTO occupational SET ?', new_occupational , (err, results) => {
     if (err) {
       return res.status(500).json({ error: 'Create operation failed' });
     }
