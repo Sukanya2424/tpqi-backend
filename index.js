@@ -53,26 +53,54 @@ app.get('/', (req, res) => {
 
 
 
+// app.post('/register', (req, res) => {
+//   const { id,email,password,firstNameTH,lastNameTH,firstNameEN,lastNameEN,phone,line,address } = req.body;
+
+//   // Additional validations can be added here
+
+//   bcrypt.hash(password, 10, (err, hash) => {
+//     if (err) {
+//       return res.status(500).json({ error: 'Password hashing error' });
+//     }
+
+//     const newUser = { id,email, password: hash,firstNameTH,lastNameTH,firstNameEN,lastNameEN,phone,line,address};
+//     db2.query('INSERT INTO user SET ?', newUser, (err, results) => {
+//       if (err) {
+//         // You might want to handle specific errors like unique constraint violations
+//         return res.status(500).json({ error: 'User registration failed' });
+//       }
+//       return res.status(201).json({ message: 'User registered successfully' });
+//     });
+//   });
+// });
+
+
 app.post('/register', (req, res) => {
-  const { id,email,password,firstNameTH,lastNameTH,firstNameEN,lastNameEN,phone,line,address } = req.body;
+  const { id, email, password, profileimage , firstNameTH, lastNameTH, firstNameEN, lastNameEN, phone, line, address } = req.body;
 
-  // Additional validations can be added here
-
+  // Hash the password
   bcrypt.hash(password, 10, (err, hash) => {
-    if (err) {
-      return res.status(500).json({ error: 'Password hashing error' });
-    }
-
-    const newUser = { id,email, password: hash,firstNameTH,lastNameTH,firstNameEN,lastNameEN,phone,line,address};
-    db2.query('INSERT INTO user SET ?', newUser, (err, results) => {
       if (err) {
-        // You might want to handle specific errors like unique constraint violations
-        return res.status(500).json({ error: 'User registration failed' });
+          return res.status(500).json({ error: 'Password hashing error' });
       }
-      return res.status(201).json({ message: 'User registered successfully' });
-    });
+
+      // SQL query to insert user data into the database
+      const sql = `INSERT INTO user (id, email, password, profileimage, firstNameTH, lastNameTH, firstNameEN, lastNameEN, phone, line, address) VALUES (?,?,?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+      const values = [id, email, hash, profileimage, firstNameTH, lastNameTH, firstNameEN, lastNameEN, phone, line, address];
+
+      // Execute the SQL query
+      db2.query(sql, values, (err, result) => {
+          if (err) {
+              console.error('Error inserting user data:', err);
+              return res.status(500).json({ error: 'User registration failed' });
+          }
+          console.log('User registered successfully');
+          return res.status(201).json({ message: 'User registered successfully' });
+      });
   });
 });
+
+
 
 
 app.post('/login', (req, res) => {
